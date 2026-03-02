@@ -1,0 +1,33 @@
+app-id: com.orfview.app
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+command: orfview
+finish-args:
+  # X11 + Wayland access
+  - --socket=fallback-x11
+  - --socket=wayland
+  # Network access (for any external resources, though app works offline)
+  - --share=network
+  # GPU acceleration
+  - --device=dri
+  # File system access (needs to open user files)
+  - --filesystem=host
+
+modules:
+  - name: orfview
+    buildsystem: simple
+    build-commands:
+      # Copy the pre-built binary and resources to /app/bin and /app/share
+      - install -D orfview /app/bin/orfview
+      - install -D 128x128.png /app/share/icons/hicolor/128x128/apps/com.orfview.app.png
+      - install -D com.orfview.app.desktop /app/share/applications/com.orfview.app.desktop
+    sources:
+      # In the CI, we will patch this source to point to the local release build
+      - type: file
+        path: ../target/release/orfview
+        dest-filename: orfview
+      - type: file
+        path: ../icons/128x128.png
+      - type: file
+        path: com.orfview.app.desktop

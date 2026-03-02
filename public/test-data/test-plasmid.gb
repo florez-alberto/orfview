@@ -1,0 +1,33 @@
+LOCUS       pTest               500 bp    DNA     circular SYN 01-JAN-2024
+DEFINITION  Test plasmid for ORFView development.
+ACCESSION   TEST001
+VERSION     TEST001.1
+KEYWORDS    test; plasmid; development.
+SOURCE      synthetic construct
+  ORGANISM  synthetic construct
+            other sequences.
+FEATURES             Location/Qualifiers
+     promoter        1..50
+                     /label="T7 Promoter"
+                     /note="Test promoter"
+     CDS             60..200
+                     /label="GFP"
+                     /gene="gfp"
+                     /product="Green Fluorescent Protein"
+                     /codon_start=1
+     terminator      210..260
+                     /label="T7 Terminator"
+     rep_origin      300..450
+                     /label="pUC ori"
+                     /note="pUC origin of replication"
+ORIGIN
+        1 taatacgact cactataggg gaattgtgag cggataacaa ttcccctcta gaaataattt
+       61 atgagtaaag gagaagaact tttcactgga gttgtcccaa ttcttgttga attagatggt
+      121 gatgttaatg ggcacaaatt ttctgtcagt ggagagggtg aaggtgatgc aacatacgga
+      181 aaacttaccc ttaaatttat ttgcactact ggaaaactac ctgttccatg gccaacactt
+      241 gtcactactt tctcttatgg tgttcaatgc ttttcccgtt atccggatca tatgaaacgg
+      301 catgactttg gcacagcatg atgtacctga tgatcttgag gttgatgttt tggcttttga
+      361 agttgatgat ttaggtgatt tggatgatga ggttgatgat tttggtgatt tggatgatga
+      421 ggtttgaatt agtccgttga tgatttggtg atttggatga tgaggttgat gatttggtga
+      481 tttggatgat gaggttgatg
+//

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=ORFView
+Comment=Plasmid visualisation and Sanger sequencing analysis
+Icon=com.orfview.app
+Exec=orfview
+Categories=Science;Biology;
+Terminal=false

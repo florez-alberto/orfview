@@ -1,0 +1,93 @@
+name: Release
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  release:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-24.04, macos-latest, windows-latest]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies (Ubuntu)
+        if: matrix.platform == 'ubuntu-24.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libssl-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            flatpak-builder
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Build the app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: 'App v__VERSION__'
+          releaseBody: 'See the assets to download this version and install.'
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.platform == 'macos-latest' && '--target universal-apple-darwin' || '' }}
+
+      - name: Build Flatpak
+        if: matrix.platform == 'ubuntu-24.04'
+        run: |
+          # Create directory structure expected by manifest if needed or assume paths
+          mkdir -p build-dir
+          
+          # Initialise repo
+          ostree init --mode=archive-z2 --repo=repo
+          
+          # Add flathub remote for runtime dependencies
+          flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          
+          # Install runtime/sdk (might need sudo in CI if not pre-installed or user-space)
+          # Note: Github actions usually need specific setup for flatpak, using a simple builder action is often better.
+          # However, manual approach:
+          flatpak install --user -y flathub org.freedesktop.Platform//23.08 org.freedesktop.Sdk//23.08
+          
+          # Build
+          # We need to ensure the binary is where the manifest expects it (src-tauri/target/release/orfview)
+          # The tauri-action builds it there.
+          
+          flatpak-builder --user --repo=repo --force-clean build-dir src-tauri/flatpak/com.orfview.app.yml
+          
+          # Bundle
+          flatpak build-bundle repo orfview.flatpak com.orfview.app
+
+      - name: Upload Flatpak
+        if: matrix.platform == 'ubuntu-24.04'
+        uses: actions/upload-artifact@v4
+        with:
+          name: orfview-flatpak
+          path: orfview.flatpak
