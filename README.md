@@ -3,7 +3,7 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![CI](https://github.com/florez-alberto/orfview/actions/workflows/test.yml/badge.svg)](https://github.com/florez-alberto/orfview/actions/workflows/test.yml)
 ![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20Linux%20%7C%20Windows-brightgreen)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18838851.svg)](https://doi.org/10.5281/zenodo.18838851)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18838851.svg)](https://doi.org/10.5281/zenodo.18838850)
 
 **A lightweight desktop app for plasmid visualisation and Sanger sequencing alignment. ~5 MB, no subscriptions, no data collection.**
 
@@ -67,8 +67,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for architecture details, the extension A
 
 ### Community & Support
 - Bug reports — [GitHub Issues](https://github.com/florez-alberto/orfview/issues)
-Feature requests — [start a Discussion](https://github.com/florez-alberto/orfview/discussions)
-Contributing — PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md)
+- Feature requests — [start a Discussion](https://github.com/florez-alberto/orfview/discussions)
+- Contributing — PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ### License
 [MIT](LICENSE)  — Alberto Florez, 2026
